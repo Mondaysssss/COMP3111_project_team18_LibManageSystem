@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="library.controllers.BookReaderController">
+    <center>
+        <ScrollPane fx:id="scrollPane" fitToWidth="true" fitToHeight="true">
+            <TextFlow fx:id="textFlow" style="-fx-padding: 20;">
+            </TextFlow>
+        </ScrollPane>
+    </center>
+    <bottom>
+        <HBox alignment="CENTER_LEFT" spacing="10" style="-fx-padding: 10;">
+            <Label text="Zoom:" />
+            <Slider fx:id="zoomSlider" min="10" max="36" value="14" prefWidth="200" />
+        </HBox>
+    </bottom>
+</BorderPane>
+
