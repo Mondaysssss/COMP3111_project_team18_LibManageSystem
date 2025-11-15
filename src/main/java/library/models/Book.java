@@ -5,11 +5,21 @@ import java.util.Date;
 public class Book {
     private String title;
     private String author;
+    private String authorUsername; // Username of the author who published the book
     private String abstractContent;
     private String status; // e.g., "pending", "approved", "rejected"
     private Date publishedDate;
     private int borrowCount;
     private String content; // The actual content of the book
+    private int readers; // Number of readers who have read the book
+
+    // Default constructor for Gson
+    public Book() {
+        this.status = "pending";
+        this.publishedDate = null;
+        this.borrowCount = 0;
+        this.readers = 0;
+    }
 
     public Book(String title, String author, String abstractContent, String content) {
         this.title = title;
@@ -19,6 +29,7 @@ public class Book {
         this.status = "pending";
         this.publishedDate = null;
         this.borrowCount = 0;
+        this.readers = 0;
     }
 
     // Getters and Setters
@@ -76,5 +87,21 @@ public class Book {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public String getAuthorUsername() {
+        return authorUsername;
+    }
+
+    public void setAuthorUsername(String authorUsername) {
+        this.authorUsername = authorUsername;
+    }
+
+    public int getReaders() {
+        return readers;
+    }
+
+    public void setReaders(int readers) {
+        this.readers = readers;
     }
 }

@@ -12,5 +12,12 @@
     "fullName": "1234",
     "role": "librarian",
     "status": "active"
+  },
+  {
+    "username": "12345",
+    "password": "123456",
+    "fullName": "123",
+    "role": "author",
+    "status": "active"
   }
 ]

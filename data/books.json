@@ -1,1 +1,12 @@
-[]
+[
+  {
+    "title": "test",
+    "author": "123",
+    "authorUsername": "12345",
+    "abstractContent": "Hahaaa",
+    "status": "pending",
+    "borrowCount": 0,
+    "content": "\u003chtml lang\u003d\"zh-CN\"\u003e \u003chead\u003e \u003cmeta content\u003d\"origin\" name\u003d\"referrer\"\u003e  \u003cscript nonce\u003d\"x8VkJt8KIx9P2ZxbvhReSw\"\u003ewindow.google \u003d {};(function(){\nvar d\u003d/^\\s*(?!javascript:)(?:[\\w+.-]+:|[^:/?#]*(?:[/?#]|$))/i;\n(this||self).google.navigateTo\u003dfunction(a,c,b){!/\\/.*?[\u0026?]gsc\u003d1/.test(c.location.href)\u0026\u0026a!\u003d\u003dc\u0026\u0026a.google?a.google.r\u0026\u0026(a.google.r\u003d0,a\u003da.location,b\u003dd.test(b)?b:void 0,b!\u003d\u003dvoid 0\u0026\u0026(a.href\u003db),c.location.replace(\"about:blank\")):c.location.replace(b)};}).call(this);(function(){var redirectUrl\u003d\u0027https://geog1.hku.hk/sliang/book/book.review.txt\u0027;google.navigateTo(parent,window,redirectUrl);})();\u003c/script\u003e \u003cnoscript\u003e \u003cmeta content\u003d\"0;url\u003dhttps://geog1.hku.hk/sliang/book/book.review.txt\" http-equiv\u003d\"refresh\"\u003e \u003c/noscript\u003e \u003c/head\u003e  \u003c/html\u003e",
+    "readers": 0
+  }
+]
