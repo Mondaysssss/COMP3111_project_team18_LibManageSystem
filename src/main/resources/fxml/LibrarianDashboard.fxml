@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane prefHeight="600" prefWidth="900" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="library.controllers.LibrarianDashboardController">
+
+    <!-- Top header + Logout -->
+    <top>
+        <Label style="-fx-font-size:24px; -fx-padding:10" text="Librarian Dashboard" BorderPane.alignment="CENTER" />
+    </top>
+
+    <!-- Main tabs -->
+    <center>
+        <TabPane fx:id="tabPane" tabClosingPolicy="UNAVAILABLE">
+
+            <!-- 1) Pending Approvals -->
+            <Tab text="Pending Approvals">
+                <content>
+                    <VBox spacing="10" alignment="CENTER">
+                        <padding>
+                            <Insets top="10" right="10" bottom="10" left="10" />
+                        </padding>
+                        <TableView fx:id="pendingBooksTable">
+                            <columns>
+                                <TableColumn fx:id="pendingTitleColumn" text="Title" prefWidth="200"/>
+                                <TableColumn fx:id="pendingAuthorColumn" text="Author" prefWidth="150"/>
+                                <TableColumn fx:id="pendingAbstractColumn" text="Abstract" prefWidth="300"/>
+                                <TableColumn fx:id="pendingActionsColumn" text="Actions" prefWidth="200"/>
+                            </columns>
+                        </TableView>
+                    </VBox>
+                </content>
+            </Tab>
+
+            <!-- 2) Manage Users -->
+            <Tab text="Manage Users">
+                <content>
+                    <VBox spacing="10" alignment="CENTER">
+                        <padding>
+                            <Insets top="10" right="10" bottom="10" left="10" />
+                        </padding>
+                        <TableView fx:id="usersTable">
+                            <columns>
+                                <TableColumn fx:id="usernameColumn" text="Username" prefWidth="150"/>
+                                <TableColumn fx:id="roleColumn" text="Role" prefWidth="100"/>
+                                <TableColumn fx:id="nameColumn" text="Name" prefWidth="150"/>
+                                <TableColumn fx:id="statusColumn" text="Active" prefWidth="100"/>
+                                <TableColumn fx:id="userActionsColumn" text="Actions" prefWidth="150"/>
+                            </columns>
+                        </TableView>
+                    </VBox>
+                </content>
+            </Tab>
+
+            <!-- 3) My Profile -->
+            <Tab text="My Profile">
+                <content>
+                    <GridPane hgap="10" vgap="10" alignment="CENTER">
+                        <padding>
+                            <Insets top="20" right="20" bottom="20" left="20"/>
+                        </padding>
+                        <Label text="Username:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                        <Label fx:id="profileUsernameField" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+                        <Label text="Name:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                        <TextField fx:id="profileNameField" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+                        <Label text="Password:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+                        <PasswordField fx:id="profilePasswordField" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+                        <Button text="Update Profile" onAction="#handleUpdateProfile" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+                    </GridPane>
+                </content>
+            </Tab>
+
+            <!-- 4) Borrowed Books Report -->
+            <Tab text="Borrowed Books">
+                <content>
+                    <VBox spacing="10" alignment="CENTER">
+                        <padding>
+                            <Insets top="10" right="10" bottom="10" left="10" />
+                        </padding>
+                        <TableView fx:id="borrowedBooksTable">
+                            <columns>
+                                <TableColumn fx:id="borrowedTitleColumn" text="Book Title" prefWidth="250"/>
+                                <TableColumn fx:id="borrowerColumn" text="Borrower" prefWidth="150"/>
+                                <TableColumn fx:id="borrowDateColumn" text="Borrowed Date" prefWidth="200"/>
+                                <TableColumn fx:id="returnDateColumn" text="Time Left" prefWidth="150"/>
+                            </columns>
+                        </TableView>
+                    </VBox>
+                </content>
+            </Tab>
+
+            <!-- 5) Published Books Report -->
+            <Tab text="Published Books">
+                <content>
+                    <VBox spacing="10" alignment="CENTER">
+                        <padding>
+                            <Insets top="10" right="10" bottom="10" left="10" />
+                        </padding>
+                        <TableView fx:id="publishedBooksTable">
+                            <columns>
+                                <TableColumn fx:id="publishedTitleColumn" text="Book Title" prefWidth="250"/>
+                                <TableColumn fx:id="publishedAuthorColumn" text="Author" prefWidth="150"/>
+                                <TableColumn fx:id="publishedDateColumn" text="Published Date" prefWidth="150"/>
+                                <TableColumn fx:id="borrowCountColumn" text="Times Borrowed" prefWidth="120"/>
+                                <TableColumn fx:id="publishedActionsColumn" text="Actions" prefWidth="150"/>
+                            </columns>
+                        </TableView>
+                    </VBox>
+                </content>
+            </Tab>
+
+        </TabPane>
+    </center>
+
+    <bottom>
+        <HBox alignment="CENTER" spacing="20">
+            <padding>
+                <Insets bottom="10" left="10" right="10" top="10" />
+            </padding>
+            <Button onAction="#handleLogout" prefHeight="40" prefWidth="150" text="Logout" />
+        </HBox>
+    </bottom>
+</BorderPane>

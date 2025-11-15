@@ -1,0 +1,16 @@
+[
+  {
+    "username": "123",
+    "password": "123",
+    "fullName": "123",
+    "role": "librarian",
+    "status": "inactive"
+  },
+  {
+    "username": "1234",
+    "password": "1234",
+    "fullName": "1234",
+    "role": "librarian",
+    "status": "active"
+  }
+]
