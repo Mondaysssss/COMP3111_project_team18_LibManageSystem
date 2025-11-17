@@ -48,5 +48,15 @@
     "message": "The book \"test1\" has been returned.",
     "authorUsername": "s1",
     "read": false
+  },
+  {
+    "message": "The book \"test1\" you borrowed has expired.",
+    "authorUsername": "s1",
+    "read": false
+  },
+  {
+    "message": "The book \"RealBook\" has been returned.",
+    "authorUsername": "s1",
+    "read": false
   }
 ]
