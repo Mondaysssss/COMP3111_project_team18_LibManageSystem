@@ -11,9 +11,11 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import library.Main;
 import library.models.Book;
+import library.models.Notification;
 import library.models.User;
 import library.models.BorrowedBook;
 import library.models.Notification;
@@ -136,11 +138,22 @@ public class LibrarianDashboardController {
     }
 
     private void viewBook(Book book) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Book Content");
-        alert.setHeaderText(book.getTitle());
-        alert.setContentText(book.getContent());
-        alert.showAndWait();
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/BookReader.fxml"));
+            Parent root = loader.load();
+            BookReaderController controller = loader.getController();
+            controller.setBook(book);
+
+            Stage stage = new Stage();
+            stage.setTitle("Reading: " + book.getTitle());
+            stage.initOwner(Main.getPrimaryStage());
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setScene(new Scene(root, 800, 600));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert("Error", "Failed to open book reader.");
+        }
     }
 
     private void approveBook(Book book) {
@@ -156,7 +169,8 @@ public class LibrarianDashboardController {
             }
         }
         FileUtil.writeBooks(allBooks);
-        loadPendingBooks(); // Refresh the table
+        loadPendingBooks();
+        loadPublishedBooks();
     }
 
     private void rejectBook(Book book) {
@@ -171,7 +185,13 @@ public class LibrarianDashboardController {
             }
         }
         FileUtil.writeBooks(allBooks);
-        loadPendingBooks(); // Refresh the table
+
+        String msg = "We are sorry to inform you that your book \"" + book.getTitle() + "\" has been rejected.";
+        List<Notification> notifications = FileUtil.readNotifications();
+        notifications.add(new Notification(msg, book.getAuthor()));
+        FileUtil.writeNotifications(notifications);
+
+        loadPendingBooks();
     }
     
     private void setupPublishedBooksTable() {

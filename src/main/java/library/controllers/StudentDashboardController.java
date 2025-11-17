@@ -30,63 +30,52 @@ import java.util.stream.Collectors;
 
 public class StudentDashboardController {
 
-    // ===== Task 1.2: Available Books UI 元件 =====
-    @FXML private TableView<Book> availableBooksTable; // task1.2
-    @FXML private TableColumn<Book, String> colAvailableTitle; // task1.2
-    @FXML private TableColumn<Book, String> colAvailableAuthor; // task1.2
-    @FXML private TableColumn<Book, Date> colAvailablePublished; // task1.2
-    @FXML private TableColumn<Book, String> colAvailableAbstract; // task1.2
-    @FXML private Label detailTitleLabel; // task1.2
-    @FXML private Label detailAuthorLabel; // task1.2
-    @FXML private Label detailPublishedLabel; // task1.2
-    @FXML private TextArea detailAbstractArea; // task1.2
+    @FXML private TableView<Book> availableBooksTable;
+    @FXML private TableColumn<Book, String> colAvailableTitle;
+    @FXML private TableColumn<Book, String> colAvailableAuthor;
+    @FXML private TableColumn<Book, Date> colAvailablePublished;
+    @FXML private TableColumn<Book, String> colAvailableAbstract;
+    @FXML private Label detailTitleLabel;
+    @FXML private Label detailAuthorLabel;
+    @FXML private Label detailPublishedLabel;
+    @FXML private TextArea detailAbstractArea;
 
-    // ===== Task 1.3: Borrowed Books UI 元件 =====
-    @FXML private TableView<BorrowedBook> borrowedBooksTable; // task1.3
-    @FXML private TableColumn<BorrowedBook, String> colBorrowedTitle; // task1.3
-    @FXML private TableColumn<BorrowedBook, String> colBorrowedAuthor; // task1.3 (由 book 反查作者)
-    @FXML private TableColumn<BorrowedBook, Date> colBorrowedDate; // task1.3
-    @FXML private TableColumn<BorrowedBook, String> colBorrowedTimeout; // task1.3
+    @FXML private TableView<BorrowedBook> borrowedBooksTable;
+    @FXML private TableColumn<BorrowedBook, String> colBorrowedTitle;
+    @FXML private TableColumn<BorrowedBook, String> colBorrowedAuthor;
+    @FXML private TableColumn<BorrowedBook, Date> colBorrowedDate;
+    @FXML private TableColumn<BorrowedBook, String> colBorrowedTimeout;
 
-    // ===== Task 1.4: Profile UI 元件 =====
-    @FXML private Label profileUsernameLabel; // task1.4
-    @FXML private TextField profileNewNameField; // task1.4
-    @FXML private PasswordField profileNewPasswordField; // task1.4
+    @FXML private Label profileUsernameLabel;
+    @FXML private TextField profileNewNameField;
+    @FXML private PasswordField profileNewPasswordField;
 
-    // ===== Task 1.5: Notification board UI 元件 =====
-    @FXML private ListView<String> notificationListView; // task1.5
+    @FXML private ListView<String> notificationListView;
 
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    private Timeline borrowedTimeLine; // 用於定時刷新「Time Left」欄位
+    private Timeline borrowedTimeLine;
 
     /** Called automatically after FXML is loaded. */
     @FXML
     private void initialize() {
         User current = CurrentUser.getCurrentUser();
         if (current == null) {
-            // 若沒有登入使用者，保險起見退回首頁
             navigateHome();
             return;
         }
 
-        // Task 1.2: 初始化可借書列表
-        initAvailableBooksTable(); // task1.2
+        initAvailableBooksTable();
 
-        // Task 1.3: 初始化已借書列表
-        initBorrowedBooksTable(); // task1.3
+        initBorrowedBooksTable();
 
-        // Task 1.4: 初始化個人資料畫面
-        initProfileTab(); // task1.4
+        initProfileTab();
 
-        // Task 1.5: 初始化通知板
-        loadNotifications(); // task1.5
+        loadNotifications();
     }
 
-    // ===== Task 1.2: Available book screen =====
-
-    private void initAvailableBooksTable() { // task1.2
+    private void initAvailableBooksTable() {
         if (availableBooksTable == null) {
-            return; // FXML 尚未載入對應 tab 時避免 NPE
+            return;
         }
 
         colAvailableTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
@@ -94,7 +83,7 @@ public class StudentDashboardController {
         colAvailablePublished.setCellValueFactory(new PropertyValueFactory<>("publishedDate"));
         colAvailableAbstract.setCellValueFactory(new PropertyValueFactory<>("abstractContent"));
 
-        refreshAvailableBooks(); // task1.2
+        refreshAvailableBooks();
 
         availableBooksTable.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
             if (newVal != null) {
@@ -103,7 +92,7 @@ public class StudentDashboardController {
         });
     }
 
-    private void refreshAvailableBooks() { // task1.2
+    private void refreshAvailableBooks() {
         List<Book> allBooks = FileUtil.readBooks();
         List<BorrowedBook> borrowedBooks = FileUtil.readBorrowedBooks();
         Set<String> borrowedTitles = borrowedBooks.stream()
@@ -118,7 +107,7 @@ public class StudentDashboardController {
         availableBooksTable.setItems(observableBooks);
     }
 
-    private void showBookDetails(Book book) { // task1.2
+    private void showBookDetails(Book book) {
         detailTitleLabel.setText(book.getTitle());
         detailAuthorLabel.setText(book.getAuthor());
         Date pub = book.getPublishedDate();
@@ -126,17 +115,15 @@ public class StudentDashboardController {
         detailAbstractArea.setText(book.getAbstractContent());
     }
 
-    // Task 1.2: Borrow Selected Book 流程
     @FXML
-    private void handleBorrowSelectedBook(ActionEvent event) { // task1.2
+    private void handleBorrowSelectedBook(ActionEvent event) {
         Book selected = availableBooksTable.getSelectionModel().getSelectedItem();
         if (selected == null) {
             showAlert("Error", "Please select a book to borrow.");
             return;
         }
 
-        // 彈出輸入借閱時間的對話框
-        Dialog<int[]> dialog = createDurationDialog(); // task1.2
+        Dialog<int[]> dialog = createDurationDialog();
         Optional<int[]> result = dialog.showAndWait();
         if (result.isEmpty()) {
             return;
@@ -169,7 +156,6 @@ public class StudentDashboardController {
         borrowedBooks.add(record);
         FileUtil.writeBorrowedBooks(borrowedBooks);
 
-        // 更新書的借閱數
         List<Book> allBooks = FileUtil.readBooks();
         for (Book book : allBooks) {
             if (book.getTitle().equals(selected.getTitle())) {
@@ -179,14 +165,13 @@ public class StudentDashboardController {
         }
         FileUtil.writeBooks(allBooks);
 
-        // 從可借列表移除，並刷新已借書列表
         refreshAvailableBooks();
         refreshBorrowedBooks();
 
         showAlert("Hint", "Book borrowed successfully.");
     }
 
-    private Dialog<int[]> createDurationDialog() { // task1.2
+    private Dialog<int[]> createDurationDialog() {
         Dialog<int[]> dialog = new Dialog<>();
         dialog.setTitle("Borrow Duration");
         dialog.setHeaderText("Please enter the borrowing duration (minutes and seconds).");
@@ -220,9 +205,7 @@ public class StudentDashboardController {
         return dialog;
     }
 
-    // ===== Task 1.3: Borrowed book screen =====
-
-    private void initBorrowedBooksTable() { // task1.3
+    private void initBorrowedBooksTable() {
         if (borrowedBooksTable == null) {
             return;
         }
@@ -230,7 +213,6 @@ public class StudentDashboardController {
         colBorrowedTitle.setCellValueFactory(new PropertyValueFactory<>("bookTitle"));
         colBorrowedDate.setCellValueFactory(new PropertyValueFactory<>("borrowDate"));
 
-        // 作者名稱透過 bookTitle 再查 Book 列表
         colBorrowedAuthor.setCellValueFactory(cellData -> {
             String title = cellData.getValue().getBookTitle();
             List<Book> books = FileUtil.readBooks();
@@ -247,20 +229,18 @@ public class StudentDashboardController {
             String text = formatTimeLeft(bb.getReturnDate());
             return new javafx.beans.property.SimpleStringProperty(text);
         });
-        // 啟動定時刷新，使 Time Left 在 UI 上持續更新
         startBorrowedTimer();
 
-        refreshBorrowedBooks(); // task1.3
+        refreshBorrowedBooks();
     }
 
-    private void refreshBorrowedBooks() { // task1.3
+    private void refreshBorrowedBooks() {
         if (borrowedBooksTable == null) {
             return;
         }
         String username = CurrentUser.getCurrentUser().getUsername();
         List<BorrowedBook> all = FileUtil.readBorrowedBooks();
 
-        // Task 1.3（修改需求）：借閱逾期只發通知，不自動歸還、不讓書回到 Available
         List<Notification> notifications = FileUtil.readNotifications();
         boolean notificationUpdated = false;
         Date now = new Date();
@@ -285,25 +265,23 @@ public class StudentDashboardController {
         borrowedBooksTable.setItems(FXCollections.observableArrayList(mine));
     }
 
-    private String formatTimeLeft(Date returnDate) { // task1.3
+    private String formatTimeLeft(Date returnDate) {
         long diff = returnDate.getTime() - System.currentTimeMillis();
         if (diff <= 0) {
             return "Expired";
         }
-        long seconds = diff / 1000;
-        long days = seconds / (24 * 3600);
-        seconds %= (24 * 3600);
-        long hours = seconds / 3600;
-        seconds %= 3600;
-        long minutes = seconds / 60;
-        seconds %= 60;
+        java.time.Duration duration = java.time.Duration.ofMillis(diff);
+        long days = duration.toDays();
+        duration = duration.minusDays(days);
+        long hours = duration.toHours();
+        duration = duration.minusHours(hours);
+        long minutes = duration.toMinutes();
+        duration = duration.minusMinutes(minutes);
+        long seconds = duration.getSeconds();
         return String.format("%dd %02d:%02d:%02d", days, hours, minutes, seconds);
     }
 
-    /**
-     * 啟動一個 Timeline，每秒刷新一次借閱表，使「Time Left」欄位在 UI 中即時更新。
-     */
-    private void startBorrowedTimer() { // task1.3
+    private void startBorrowedTimer() {
         if (borrowedBooksTable == null) {
             return;
         }
@@ -311,16 +289,14 @@ public class StudentDashboardController {
             borrowedTimeLine.stop();
         }
         borrowedTimeLine = new Timeline(new KeyFrame(Duration.seconds(1), e -> {
-            // 只需要刷新 TableView，cellValueFactory 會重新計算 Time Left
             borrowedBooksTable.refresh();
         }));
         borrowedTimeLine.setCycleCount(Timeline.INDEFINITE);
         borrowedTimeLine.play();
     }
 
-    // Task 1.3: Read selected book
     @FXML
-    private void handleReadSelectedBook(ActionEvent event) { // task1.3
+    private void handleReadSelectedBook(ActionEvent event) {
         BorrowedBook selected = borrowedBooksTable.getSelectionModel().getSelectedItem();
         if (selected == null) {
             showAlert("Error", "Please select a borrowed book to read.");
@@ -361,9 +337,8 @@ public class StudentDashboardController {
         }
     }
 
-    // Task 1.3: Return selected book
     @FXML
-    private void handleReturnSelectedBook(ActionEvent event) { // task1.3
+    private void handleReturnSelectedBook(ActionEvent event) {
         BorrowedBook selected = borrowedBooksTable.getSelectionModel().getSelectedItem();
         if (selected == null) {
             showAlert("Error", "Please select a borrowed book to return.");
@@ -376,7 +351,6 @@ public class StudentDashboardController {
                 && bb.getBorrowDate().equals(selected.getBorrowDate()));
         FileUtil.writeBorrowedBooks(all);
 
-        // 新增通知
         List<Notification> notifications = FileUtil.readNotifications();
         String msg = "The book \"" + selected.getBookTitle() + "\" has been returned.";
         notifications.add(new Notification(msg, selected.getBorrowerUsername()));
@@ -388,9 +362,7 @@ public class StudentDashboardController {
         showAlert("Hint", "Book returned successfully.");
     }
 
-    // ===== Task 1.4: Manage profile screen =====
-
-    private void initProfileTab() { // task1.4
+    private void initProfileTab() {
         if (profileUsernameLabel == null) {
             return;
         }
@@ -399,7 +371,7 @@ public class StudentDashboardController {
     }
 
     @FXML
-    private void handleUpdateProfile(ActionEvent event) { // task1.4
+    private void handleUpdateProfile(ActionEvent event) {
         User current = CurrentUser.getCurrentUser();
         if (current == null) {
             showAlert("Error", "No user logged in.");
@@ -432,12 +404,10 @@ public class StudentDashboardController {
         profileNewNameField.clear();
         profileNewPasswordField.clear();
 
-        showAlert("Hint", "Account updated successfully."); // task1.4
+        showAlert("Hint", "Account updated successfully.");
     }
 
-    // ===== Task 1.5: Notification board =====
-
-    private void loadNotifications() { // task1.5
+    private void loadNotifications() {
         if (notificationListView == null) {
             return;
         }
@@ -453,7 +423,7 @@ public class StudentDashboardController {
     }
 
     @FXML
-    private void handleClearSelectedNotification(ActionEvent event) { // task1.5
+    private void handleClearSelectedNotification(ActionEvent event) {
         int index = notificationListView.getSelectionModel().getSelectedIndex();
         if (index < 0) {
             showAlert("Error", "Please select a notification to clear.");
@@ -476,7 +446,7 @@ public class StudentDashboardController {
     }
 
     @FXML
-    private void handleClearAllNotifications(ActionEvent event) { // task1.5
+    private void handleClearAllNotifications(ActionEvent event) {
         String username = CurrentUser.getCurrentUser().getUsername();
         List<Notification> notifications = FileUtil.readNotifications();
         notifications.removeIf(n -> username.equals(n.getAuthorUsername()));
@@ -484,8 +454,6 @@ public class StudentDashboardController {
 
         loadNotifications();
     }
-
-    // ===== 共用工具方法 =====
 
     private void navigateHome() {
         try {
