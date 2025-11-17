@@ -16,11 +16,15 @@ import library.Main;
 import library.models.Book;
 import library.models.User;
 import library.models.BorrowedBook;
+import library.models.Notification;
 import library.utils.FileUtil;
 import library.utils.CurrentUser;
 
 import java.io.IOException;
+import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class LibrarianDashboardController {
@@ -142,8 +146,12 @@ public class LibrarianDashboardController {
     private void approveBook(Book book) {
         List<Book> allBooks = FileUtil.readBooks();
         for (Book b : allBooks) {
-            if (b.getTitle().equals(book.getTitle())) {
+            if (isSameBook(b, book)) {
                 b.setStatus("approved");
+                if (b.getPublishedDate() == null) {
+                    b.setPublishedDate(new Date());
+                }
+                sendNotificationToAuthor(b, "Your book \"" + b.getTitle() + "\" has been approved.");
                 break;
             }
         }
@@ -153,7 +161,15 @@ public class LibrarianDashboardController {
 
     private void rejectBook(Book book) {
         List<Book> allBooks = FileUtil.readBooks();
-        allBooks.removeIf(b -> b.getTitle().equals(book.getTitle()));
+        Iterator<Book> iterator = allBooks.iterator();
+        while (iterator.hasNext()) {
+            Book b = iterator.next();
+            if (isSameBook(b, book)) {
+                iterator.remove();
+                sendNotificationToAuthor(b, "Your book \"" + b.getTitle() + "\" has been rejected.");
+                break;
+            }
+        }
         FileUtil.writeBooks(allBooks);
         loadPendingBooks(); // Refresh the table
     }
@@ -207,7 +223,7 @@ public class LibrarianDashboardController {
         alert.showAndWait().ifPresent(response -> {
             if (response == ButtonType.YES) {
                 List<Book> allBooks = FileUtil.readBooks();
-                allBooks.removeIf(b -> b.getTitle().equals(book.getTitle()));
+                allBooks.removeIf(b -> isSameBook(b, book));
                 FileUtil.writeBooks(allBooks);
                 loadPublishedBooks();
             }
@@ -340,5 +356,23 @@ public class LibrarianDashboardController {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+
+    private void sendNotificationToAuthor(Book book, String message) {
+        if (book.getAuthorUsername() == null || book.getAuthorUsername().isBlank()) {
+            return;
+        }
+        List<Notification> notifications = FileUtil.readNotifications();
+        notifications.add(new Notification(message, book.getAuthorUsername()));
+        FileUtil.writeNotifications(notifications);
+    }
+
+    private boolean isSameBook(Book left, Book right) {
+        if (left == null || right == null) {
+            return false;
+        }
+        return Objects.equals(left.getTitle(), right.getTitle()) &&
+               Objects.equals(left.getAuthorUsername(), right.getAuthorUsername()) &&
+               Objects.equals(left.getAbstractContent(), right.getAbstractContent());
     }
 }
