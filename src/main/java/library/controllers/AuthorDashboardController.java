@@ -147,17 +147,9 @@ public class AuthorDashboardController {
         }
         
         // Check if book can be modified
-        if (selectedBook.getStatus().equals("approved")) {
-            // Check if book is currently borrowed
-            List<BorrowedBook> borrowedBooks = FileUtil.readBorrowedBooks();
-            boolean isBorrowed = borrowedBooks.stream()
-                .anyMatch(bb -> bb.getBookTitle().equals(selectedBook.getTitle()) && 
-                               bb.getReturnDate() == null);
-            
-            if (isBorrowed) {
-                showAlert("Error", "Cannot modify book that is currently borrowed.");
-                return;
-            }
+        if ("approved".equalsIgnoreCase(selectedBook.getStatus()) && isBookCurrentlyBorrowed(selectedBook)) {
+            showAlert("Error", "Cannot modify book that is currently borrowed.");
+            return;
         }
         
         // Show modify dialog
@@ -226,16 +218,9 @@ public class AuthorDashboardController {
         }
         
         // Check if book can be deleted
-        if (selectedBook.getStatus().equals("approved")) {
-            List<BorrowedBook> borrowedBooks = FileUtil.readBorrowedBooks();
-            boolean isBorrowed = borrowedBooks.stream()
-                .anyMatch(bb -> bb.getBookTitle().equals(selectedBook.getTitle()) && 
-                               bb.getReturnDate() == null);
-            
-            if (isBorrowed) {
-                showAlert("Error", "Cannot delete book that is currently borrowed.");
-                return;
-            }
+        if ("approved".equalsIgnoreCase(selectedBook.getStatus()) && isBookCurrentlyBorrowed(selectedBook)) {
+            showAlert("Error", "Cannot delete book that is currently borrowed.");
+            return;
         }
         
         // Show confirmation dialog
@@ -450,6 +435,12 @@ public class AuthorDashboardController {
         allNotifications.removeIf(n -> n.getAuthorUsername().equals(currentUser.getUsername()));
         FileUtil.writeNotifications(allNotifications);
         refreshNotifications();
+    }
+
+    private boolean isBookCurrentlyBorrowed(Book book) {
+        List<BorrowedBook> borrowedBooks = FileUtil.readBorrowedBooks();
+        return borrowedBooks.stream()
+            .anyMatch(bb -> bb.getBookTitle().equals(book.getTitle()));
     }
 
     @FXML
