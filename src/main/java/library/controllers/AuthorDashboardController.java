@@ -443,11 +443,7 @@ public class AuthorDashboardController {
         refreshNotifications();
     }
 
-    private boolean isBookCurrentlyBorrowed(Book book) {
-        List<BorrowedBook> borrowedBooks = FileUtil.readBorrowedBooks();
-        return borrowedBooks.stream()
-            .anyMatch(bb -> bb.getBookTitle().equals(book.getTitle()));
-    }
+
 
     @FXML
     private void handleLogout(ActionEvent event) {
