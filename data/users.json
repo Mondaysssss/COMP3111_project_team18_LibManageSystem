@@ -33,5 +33,12 @@
     "fullName": "s1",
     "role": "student",
     "status": "active"
+  },
+  {
+    "username": "a1",
+    "password": "a1",
+    "fullName": "a1",
+    "role": "author",
+    "status": "active"
   }
 ]
