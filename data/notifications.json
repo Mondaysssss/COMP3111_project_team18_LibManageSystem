@@ -13,5 +13,10 @@
     "message": "The book \"test\" has been returned.",
     "authorUsername": "s1",
     "read": false
+  },
+  {
+    "message": "We are sorry to inform you that your book \"Test2\" has been rejected.",
+    "authorUsername": "123",
+    "read": false
   }
 ]

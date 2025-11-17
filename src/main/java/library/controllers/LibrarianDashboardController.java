@@ -11,9 +11,11 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import library.Main;
 import library.models.Book;
+import library.models.Notification;
 import library.models.User;
 import library.models.BorrowedBook;
 import library.utils.FileUtil;
@@ -132,30 +134,52 @@ public class LibrarianDashboardController {
     }
 
     private void viewBook(Book book) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Book Content");
-        alert.setHeaderText(book.getTitle());
-        alert.setContentText(book.getContent());
-        alert.showAndWait();
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/BookReader.fxml"));
+            Parent root = loader.load();
+            BookReaderController controller = loader.getController();
+            controller.setBook(book);
+
+            Stage stage = new Stage();
+            stage.setTitle("Reading: " + book.getTitle());
+            stage.initOwner(Main.getPrimaryStage());
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setScene(new Scene(root, 800, 600));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert("Error", "Failed to open book reader.");
+        }
     }
 
     private void approveBook(Book book) {
         List<Book> allBooks = FileUtil.readBooks();
         for (Book b : allBooks) {
-            if (b.getTitle().equals(book.getTitle())) {
+            if (b.getTitle().equals(book.getTitle()) && "pending".equals(b.getStatus())) {
                 b.setStatus("approved");
+                String msg = "Congratulations! Your book \"" + b.getTitle() + "\" has been approved.";
+                List<Notification> notifications = FileUtil.readNotifications();
+                notifications.add(new Notification(msg, b.getAuthor()));
+                FileUtil.writeNotifications(notifications);
                 break;
             }
         }
         FileUtil.writeBooks(allBooks);
-        loadPendingBooks(); // Refresh the table
+        loadPendingBooks();
+        loadPublishedBooks();
     }
 
     private void rejectBook(Book book) {
         List<Book> allBooks = FileUtil.readBooks();
-        allBooks.removeIf(b -> b.getTitle().equals(book.getTitle()));
+        allBooks.removeIf(b -> b.getTitle().equals(book.getTitle()) && "pending".equals(b.getStatus()));
         FileUtil.writeBooks(allBooks);
-        loadPendingBooks(); // Refresh the table
+
+        String msg = "We are sorry to inform you that your book \"" + book.getTitle() + "\" has been rejected.";
+        List<Notification> notifications = FileUtil.readNotifications();
+        notifications.add(new Notification(msg, book.getAuthor()));
+        FileUtil.writeNotifications(notifications);
+
+        loadPendingBooks();
     }
     
     private void setupPublishedBooksTable() {
