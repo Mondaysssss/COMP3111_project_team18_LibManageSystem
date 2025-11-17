@@ -3,11 +3,11 @@
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-
 <?import javafx.scene.chart.PieChart?>
 <?import javafx.scene.chart.BarChart?>
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.NumberAxis?>
+
 <BorderPane xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="library.controllers.AuthorDashboardController">
 
     <top>
@@ -18,24 +18,94 @@
         <TabPane fx:id="tabPane" prefHeight="500">
 
             <!-- My Books Tab -->
-            <Tab text="My Books">
+            <Tab text="My Books" closable="true">
+                <VBox spacing="10" style="-fx-padding: 10;">
+                    <TableView fx:id="booksTable" prefHeight="400">
+                        <columns>
+                            <TableColumn fx:id="titleColumn" text="Title" prefWidth="200" />
+                            <TableColumn fx:id="statusColumn" text="Status" prefWidth="100" />
+                            <TableColumn fx:id="publishDateColumn" text="Publish Date" prefWidth="120" />
+                            <TableColumn fx:id="readersColumn" text="Readers" prefWidth="80" />
+                            <TableColumn fx:id="abstractColumn" text="Abstract" prefWidth="300" />
+                        </columns>
+                    </TableView>
+                    <HBox alignment="CENTER_RIGHT" spacing="10">
+                        <Button fx:id="viewButton" text="View" onAction="#handleView" />
+                        <Button fx:id="modifyButton" text="Modify" onAction="#handleModify" />
+                        <Button fx:id="deleteButton" text="Delete" onAction="#handleDelete" />
+                    </HBox>
+                </VBox>
             </Tab>
 
             <!-- Publish New Book Tab -->
-            <Tab text="Publish New Book">
+            <Tab text="Publish New Book" closable="true">
+                <VBox spacing="15" style="-fx-padding: 20;" alignment="CENTER_LEFT">
+                    <GridPane hgap="10" vgap="15">
+                        <Label text="Book Title:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                        <TextField fx:id="bookTitleField" prefWidth="400" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                        
+                        <Label text="Selected Text File:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                        <HBox spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                            <TextField fx:id="selectedFileField" prefWidth="300" />
+                            <Button fx:id="chooseFileButton" text="Choose Text File" onAction="#handleChooseFile" />
+                        </HBox>
+                        
+                        <Label text="Summary of this Book:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                        <HBox spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                            <TextArea fx:id="summaryField" prefWidth="300" prefRowCount="5" wrapText="true" />
+                            <Button fx:id="generateButton" text="Generate" onAction="#handleGenerate" />
+                        </HBox>
+                    </GridPane>
+                    <Button fx:id="publishButton" text="Publish Book" onAction="#handlePublishBook" prefWidth="150" />
+                </VBox>
             </Tab>
-
 
             <!-- Status View Tab -->
-            <Tab text="Status View">
+            <Tab text="Status View" closable="true">
+                <VBox spacing="20" style="-fx-padding: 20;" alignment="CENTER">
+                    <HBox spacing="50" alignment="CENTER">
+                        <PieChart fx:id="statusPieChart" title="My Books: Status" prefWidth="300" prefHeight="300" />
+                        <BarChart fx:id="popularityBarChart" title="Top 5 Most Popular Books" prefWidth="400" prefHeight="300">
+                            <xAxis>
+                                <CategoryAxis />
+                            </xAxis>
+                            <yAxis>
+                                <NumberAxis label="Times Borrowed" />
+                            </yAxis>
+                        </BarChart>
+                    </HBox>
+                    <Button fx:id="refreshStatsButton" text="Refresh/Reload Stats" onAction="#handleRefreshStats" />
+                </VBox>
             </Tab>
 
-            <!-- Update Account Tab -->
-            <Tab text="My Profile">
+            <!-- My Profile Tab -->
+            <Tab text="My Profile" closable="true">
+                <VBox spacing="15" style="-fx-padding: 20;" alignment="CENTER" prefWidth="400">
+                    <GridPane hgap="10" vgap="15">
+                        <Label text="Username:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                        <TextField fx:id="usernameField" prefWidth="250" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                        
+                        <Label text="New Name:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                        <TextField fx:id="fullNameField" prefWidth="250" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        
+                        <Label text="New Password:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                        <PasswordField fx:id="newPasswordField" prefWidth="250" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                    </GridPane>
+                    <Button fx:id="updateProfileButton" text="Update" onAction="#handleUpdateProfile" prefWidth="150" />
+                </VBox>
             </Tab>
 
-            <!-- Inform Board -->
-            <Tab text="Inform Board">
+            <!-- Inform Board Tab -->
+            <Tab text="Inform Board" closable="true">
+                <VBox spacing="10" style="-fx-padding: 20;">
+                    <HBox spacing="10">
+                        <Button fx:id="clearAllButton" text="Clear All" onAction="#handleClearAll" />
+                        <Label text="Notifications" style="-fx-font-size: 16px;" />
+                    </HBox>
+                    <ScrollPane fitToWidth="true" prefHeight="400">
+                        <VBox fx:id="notificationsVBox" spacing="10" style="-fx-padding: 10;" />
+                    </ScrollPane>
+                </VBox>
             </Tab>
 
         </TabPane>

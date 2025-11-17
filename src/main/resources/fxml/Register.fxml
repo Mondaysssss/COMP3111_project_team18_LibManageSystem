@@ -25,12 +25,10 @@
         <TextField fx:id="usernameField" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
         <Label text="Password:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
         <PasswordField fx:id="passwordField" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
-        <Label text="Confirm Password:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
-        <PasswordField fx:id="confirmPasswordField" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
-        <Label text="Full Name:" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
-        <TextField fx:id="fullNameField" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+        <Label text="Full Name:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+        <TextField fx:id="fullNameField" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
     </GridPane>
-    <Button text="Register" prefWidth="150" prefHeight="40" onAction="#handleRegister"/>
+    <Button text="Register" onAction="#handleRegister" prefWidth="150" prefHeight="40"/>
     <Button text="Back"      onAction="#handleBack"    prefWidth="100" prefHeight="30"/>
 
     <!-- New Login link: -->

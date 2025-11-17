@@ -16,20 +16,112 @@
     <center>
         <TabPane fx:id="tabPane">
 
-            <!-- Available Books -->
-            <Tab text="Available Books">
+            <!-- Task 1.2: Available book screen (borrow a book) -->
+            <Tab text="Available Books" closable="false">
+                <BorderPane>
+                    <center>
+                        <SplitPane dividerPositions="0.6">
+                            <!-- Left: table of available books -->
+                            <TableView fx:id="availableBooksTable" prefWidth="600.0">
+                                <columns>
+                                    <TableColumn fx:id="colAvailableTitle" text="Title" prefWidth="150.0"/>
+                                    <TableColumn fx:id="colAvailableAuthor" text="Author" prefWidth="120.0"/>
+                                    <TableColumn fx:id="colAvailablePublished" text="Published Date" prefWidth="150.0"/>
+                                    <TableColumn fx:id="colAvailableAbstract" text="Abstract" prefWidth="250.0"/>
+                                </columns>
+                            </TableView>
+
+                            <!-- Right: selected book details -->
+                            <VBox spacing="10.0">
+                                <padding>
+                                    <Insets top="10" right="10" bottom="10" left="10"/>
+                                </padding>
+                                <Label text="Book Details" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+                                <GridPane hgap="5" vgap="5">
+                                    <Label text="Title:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                                    <Label fx:id="detailTitleLabel" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+                                    <Label text="Author:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                                    <Label fx:id="detailAuthorLabel" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+                                    <Label text="Published:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+                                    <Label fx:id="detailPublishedLabel" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+                                </GridPane>
+                                <Label text="Abstract:"/>
+                                <TextArea fx:id="detailAbstractArea" editable="false" wrapText="true" prefRowCount="6"/>
+                            </VBox>
+                        </SplitPane>
+                    </center>
+                    <bottom>
+                        <HBox alignment="CENTER_RIGHT" spacing="10.0">
+                            <padding>
+                                <Insets top="10" right="10" bottom="10" left="10"/>
+                            </padding>
+                            <Button fx:id="borrowButton" text="Borrow Selected Book" onAction="#handleBorrowSelectedBook"/>
+                        </HBox>
+                    </bottom>
+                </BorderPane>
             </Tab>
 
-            <!-- My Borrowed Books -->
-            <Tab text="My Borrowed Books">
+            <!-- Task 1.3: Borrowed book screen -->
+            <Tab text="My Borrowed Books" closable="false">
+                <BorderPane>
+                    <center>
+                        <TableView fx:id="borrowedBooksTable">
+                            <columns>
+                                <TableColumn fx:id="colBorrowedTitle" text="Title" prefWidth="200.0"/>
+                                <TableColumn fx:id="colBorrowedAuthor" text="Author" prefWidth="150.0"/>
+                                <TableColumn fx:id="colBorrowedDate" text="Borrowed Date" prefWidth="150.0"/>
+                                <TableColumn fx:id="colBorrowedTimeout" text="Time Left" prefWidth="150.0"/>
+                            </columns>
+                        </TableView>
+                    </center>
+                    <bottom>
+                        <HBox alignment="CENTER_RIGHT" spacing="10.0">
+                            <padding>
+                                <Insets top="10" right="10" bottom="10" left="10"/>
+                            </padding>
+                            <Button text="Read Selected Book" onAction="#handleReadSelectedBook"/>
+                            <Button text="Return Selected Book" onAction="#handleReturnSelectedBook"/>
+                        </HBox>
+                    </bottom>
+                </BorderPane>
             </Tab>
 
-            <!-- Update Account -->
-            <Tab text="My Profile">
+            <!-- Task 1.4: Manage profile screen -->
+            <Tab text="My Profile" closable="false">
+                <VBox alignment="TOP_CENTER" spacing="15.0">
+                    <padding>
+                        <Insets top="20" right="20" bottom="20" left="20"/>
+                    </padding>
+                    <GridPane hgap="10" vgap="10">
+                        <Label text="Username:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                        <Label fx:id="profileUsernameLabel" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+                        <Label text="New Name:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                        <TextField fx:id="profileNewNameField" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+                        <Label text="New Password:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+                        <PasswordField fx:id="profileNewPasswordField" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+                    </GridPane>
+                    <Button text="Update" prefWidth="150" onAction="#handleUpdateProfile"/>
+                </VBox>
             </Tab>
 
-            <!-- Inform Board -->
-            <Tab text="Inform Board">
+            <!-- Task 1.5: Notification board -->
+            <Tab text="Inform Board" closable="false">
+                <BorderPane>
+                    <center>
+                        <ListView fx:id="notificationListView"/>
+                    </center>
+                    <top>
+                        <HBox alignment="CENTER_RIGHT" spacing="10.0">
+                            <padding>
+                                <Insets top="10" right="10" bottom="10" left="10"/>
+                            </padding>
+                            <Button text="Clear Selected" onAction="#handleClearSelectedNotification"/>
+                            <Button text="Clear All" onAction="#handleClearAllNotifications"/>
+                        </HBox>
+                    </top>
+                </BorderPane>
             </Tab>
 
         </TabPane>
