@@ -1,1 +1,17 @@
-[]
+[
+  {
+    "message": "The book \"test\" has been returned.",
+    "authorUsername": "s1",
+    "read": false
+  },
+  {
+    "message": "The book \"test\" you borrowed has expired.",
+    "authorUsername": "s1",
+    "read": false
+  },
+  {
+    "message": "The book \"test\" has been returned.",
+    "authorUsername": "s1",
+    "read": false
+  }
+]
