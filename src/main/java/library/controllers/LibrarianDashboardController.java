@@ -243,7 +243,15 @@ public class LibrarianDashboardController {
         alert.showAndWait().ifPresent(response -> {
             if (response == ButtonType.YES) {
                 List<Book> allBooks = FileUtil.readBooks();
-                allBooks.removeIf(b -> isSameBook(b, book));
+                Iterator<Book> iterator = allBooks.iterator();
+                while (iterator.hasNext()) {
+                    Book current = iterator.next();
+                    if (isSameBook(current, book)) {
+                        iterator.remove();
+                        sendNotificationToAuthor(current, "Your book \"" + current.getTitle() + "\" has been deleted by the librarian.");
+                        break;
+                    }
+                }
                 FileUtil.writeBooks(allBooks);
                 loadPublishedBooks();
             }

@@ -1,14 +1,8 @@
 [
   {
-    "bookTitle": "Test1",
+    "bookTitle": "test1",
     "borrowerUsername": "s1",
-    "borrowDate": "Nov 17, 2025, 8:27:52 PM",
-    "returnDate": "Nov 17, 2025, 8:29:52 PM"
-  },
-  {
-    "bookTitle": "test3",
-    "borrowerUsername": "s1",
-    "borrowDate": "Nov 17, 2025, 9:06:08 PM",
-    "returnDate": "Nov 17, 2025, 9:07:08 PM"
+    "borrowDate": "Nov 17, 2025, 9:52:18 PM",
+    "returnDate": "Nov 17, 2025, 9:52:19 PM"
   }
 ]

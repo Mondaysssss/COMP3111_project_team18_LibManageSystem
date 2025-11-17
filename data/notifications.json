@@ -18,5 +18,35 @@
     "message": "We are sorry to inform you that your book \"Test2\" has been rejected.",
     "authorUsername": "123",
     "read": false
+  },
+  {
+    "message": "The book \"Test1\" you borrowed has expired.",
+    "authorUsername": "s1",
+    "read": false
+  },
+  {
+    "message": "The book \"test3\" you borrowed has expired.",
+    "authorUsername": "s1",
+    "read": false
+  },
+  {
+    "message": "The book \"test3\" has been returned.",
+    "authorUsername": "s1",
+    "read": false
+  },
+  {
+    "message": "The book \"Test1\" has been returned.",
+    "authorUsername": "s1",
+    "read": false
+  },
+  {
+    "message": "The book \"test1\" has been returned.",
+    "authorUsername": "s1",
+    "read": false
+  },
+  {
+    "message": "The book \"test1\" has been returned.",
+    "authorUsername": "s1",
+    "read": false
   }
 ]
