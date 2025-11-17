@@ -1,0 +1,37 @@
+[
+  {
+    "username": "123",
+    "password": "123",
+    "fullName": "123",
+    "role": "librarian",
+    "status": "active"
+  },
+  {
+    "username": "1234",
+    "password": "1234",
+    "fullName": "1234",
+    "role": "librarian",
+    "status": "active"
+  },
+  {
+    "username": "12345",
+    "password": "123456",
+    "fullName": "123",
+    "role": "author",
+    "status": "active"
+  },
+  {
+    "username": "l1",
+    "password": "l1",
+    "fullName": "l1",
+    "role": "librarian",
+    "status": "active"
+  },
+  {
+    "username": "s1",
+    "password": "s1",
+    "fullName": "s1",
+    "role": "student",
+    "status": "active"
+  }
+]

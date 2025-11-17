@@ -10,13 +10,17 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import library.Main;
+import library.models.User;
+import library.utils.FileUtil;
+import library.utils.CurrentUser;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Objects;
 
 public class LoginController {
-    @FXML private Label        headerLabel;
-    @FXML private TextField    usernameField;
+    @FXML private Label headerLabel;
+    @FXML private TextField usernameField;
     @FXML private PasswordField passwordField;
 
     private String selectedRole;
@@ -38,8 +42,35 @@ public class LoginController {
         Main.getPrimaryStage().setScene(new Scene(home, 640, 480));
     }
 
+    // Task 1.1.1: Handling the student/staff login
     @FXML
-    private void handleLogin(ActionEvent event) {
+    private void handleLogin(ActionEvent event) { // task1.1.1
+        String username = usernameField.getText();
+        String password = passwordField.getText();
+
+        if (username.isEmpty() || password.isEmpty()) {
+            showAlert("Error", "Username and password are required.");
+            return;
+        }
+
+        List<User> users = FileUtil.readUsers();
+        for (User user : users) {
+            if (user.getUsername().equals(username) && user.getPassword().equals(password) && user.getRole().equalsIgnoreCase(selectedRole)) {
+                if (user.getStatus().equals("active")) {
+                    CurrentUser.setCurrentUser(user);
+                    navigateToDashboard();
+                } else {
+                    showAlert("Error", "User is not active.");
+                }
+                return;
+            }
+        }
+
+        showAlert("Error", "Invalid username or password.");
+    }
+
+    // Task 1.1.1: Navigate to the corresponding dashboard after successful login
+    private void navigateToDashboard() { // task1.1.1
         String fxml;
         switch (selectedRole.toLowerCase()) {
             case "student":   fxml = "/fxml/StudentDashboard.fxml";   break;
@@ -55,9 +86,11 @@ public class LoginController {
         }
     }
 
-    /** New: navigate to the standalone Register screen */
+    /** 
+     * Task 1.1.2: Navigate from Login to Register screen when user clicks "Register" link.
+     */
     @FXML
-    private void handleGoToRegister(ActionEvent event) throws IOException {
+    private void handleGoToRegister(ActionEvent event) throws IOException { // task1.1.2
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Register.fxml"));
         Parent root = loader.load();
         RegisterController ctrl = loader.getController();
@@ -69,5 +102,13 @@ public class LoginController {
 
     private String capitalize(String s) {
         return s.substring(0,1).toUpperCase() + s.substring(1);
+    }
+    
+    private void showAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }
