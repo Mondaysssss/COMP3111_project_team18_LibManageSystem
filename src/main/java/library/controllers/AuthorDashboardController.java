@@ -147,7 +147,7 @@ public class AuthorDashboardController {
         }
         
         // Check if book can be modified
-        if (selectedBook.getStatus().equalsIgnoreCase("approved") && isBookCurrentlyBorrowed(selectedBook)) {
+        if ("approved".equalsIgnoreCase(selectedBook.getStatus()) && isBookCurrentlyBorrowed(selectedBook)) {
             showAlert("Error", "Cannot modify book that is currently borrowed.");
             return;
         }
@@ -218,7 +218,7 @@ public class AuthorDashboardController {
         }
         
         // Check if book can be deleted
-        if (selectedBook.getStatus().equalsIgnoreCase("approved") && isBookCurrentlyBorrowed(selectedBook)) {
+        if ("approved".equalsIgnoreCase(selectedBook.getStatus()) && isBookCurrentlyBorrowed(selectedBook)) {
             showAlert("Error", "Cannot delete book that is currently borrowed.");
             return;
         }
@@ -441,6 +441,12 @@ public class AuthorDashboardController {
         allNotifications.removeIf(n -> n.getAuthorUsername().equals(currentUser.getUsername()));
         FileUtil.writeNotifications(allNotifications);
         refreshNotifications();
+    }
+
+    private boolean isBookCurrentlyBorrowed(Book book) {
+        List<BorrowedBook> borrowedBooks = FileUtil.readBorrowedBooks();
+        return borrowedBooks.stream()
+            .anyMatch(bb -> bb.getBookTitle().equals(book.getTitle()));
     }
 
     @FXML

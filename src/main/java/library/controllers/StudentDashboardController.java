@@ -146,18 +146,19 @@ public class StudentDashboardController {
         int minutes = duration[0];
         int seconds = duration[1];
 
-        long totalMinutes = minutes + seconds / 60;
-        if (totalMinutes <= 0) {
-            showAlert("Error", "Borrow duration must be greater than 0.");
+        long totalSeconds = minutes * 60L + seconds;
+        if (totalSeconds <= 0) {
+            showAlert("Error", "Borrow duration must be at least 1 second.");
             return;
         }
-        if (totalMinutes > 20160) { // 14 days * 24 * 60
+        long maxSeconds = 20160L * 60; // 14 days
+        if (totalSeconds > maxSeconds) {
             showAlert("Error", "Borrow duration cannot exceed 20160 minutes (14 days).");
             return;
         }
 
         Date now = new Date();
-        long millis = java.time.Duration.ofMinutes(totalMinutes).toMillis();
+        long millis = java.time.Duration.ofSeconds(totalSeconds).toMillis();
         Date returnDate = new Date(now.getTime() + millis);
 
         List<BorrowedBook> borrowedBooks = FileUtil.readBorrowedBooks();
@@ -323,6 +324,12 @@ public class StudentDashboardController {
         BorrowedBook selected = borrowedBooksTable.getSelectionModel().getSelectedItem();
         if (selected == null) {
             showAlert("Error", "Please select a borrowed book to read.");
+            return;
+        }
+
+        // 若已過期則禁止閱讀
+        if (selected.getReturnDate().before(new Date())) {
+            showAlert("Error", "This book has expired. Please return it before reading.");
             return;
         }
 
