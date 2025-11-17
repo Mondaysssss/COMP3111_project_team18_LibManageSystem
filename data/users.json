@@ -40,5 +40,12 @@
     "fullName": "a1",
     "role": "author",
     "status": "active"
+  },
+  {
+    "username": "1",
+    "password": "a",
+    "fullName": "1",
+    "role": "author",
+    "status": "active"
   }
 ]

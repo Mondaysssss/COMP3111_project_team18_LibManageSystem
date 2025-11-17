@@ -96,8 +96,8 @@ public class AuthorDashboardController {
             }
             return new SimpleStringProperty("");
         });
-        readersColumn.setCellValueFactory(cellData -> 
-            new SimpleStringProperty(String.valueOf(cellData.getValue().getReaders())));
+        readersColumn.setCellValueFactory(cellData ->
+            new SimpleStringProperty(String.valueOf(cellData.getValue().getBorrowCount())));
         abstractColumn.setCellValueFactory(new PropertyValueFactory<>("abstractContent"));
         
         refreshBooksTable();

@@ -175,23 +175,19 @@ public class LibrarianDashboardController {
 
     private void rejectBook(Book book) {
         List<Book> allBooks = FileUtil.readBooks();
-        Iterator<Book> iterator = allBooks.iterator();
-        while (iterator.hasNext()) {
-            Book b = iterator.next();
+        boolean updated = false;
+        for (Book b : allBooks) {
             if (isSameBook(b, book)) {
-                iterator.remove();
+                b.setStatus("rejected");
                 sendNotificationToAuthor(b, "Your book \"" + b.getTitle() + "\" has been rejected.");
+                updated = true;
                 break;
             }
         }
-        FileUtil.writeBooks(allBooks);
-
-        String msg = "We are sorry to inform you that your book \"" + book.getTitle() + "\" has been rejected.";
-        List<Notification> notifications = FileUtil.readNotifications();
-        notifications.add(new Notification(msg, book.getAuthor()));
-        FileUtil.writeNotifications(notifications);
-
-        loadPendingBooks();
+        if (updated) {
+            FileUtil.writeBooks(allBooks);
+            loadPendingBooks();
+        }
     }
     
     private void setupPublishedBooksTable() {
@@ -243,7 +239,15 @@ public class LibrarianDashboardController {
         alert.showAndWait().ifPresent(response -> {
             if (response == ButtonType.YES) {
                 List<Book> allBooks = FileUtil.readBooks();
-                allBooks.removeIf(b -> isSameBook(b, book));
+                Iterator<Book> iterator = allBooks.iterator();
+                while (iterator.hasNext()) {
+                    Book current = iterator.next();
+                    if (isSameBook(current, book)) {
+                        iterator.remove();
+                        sendNotificationToAuthor(current, "Your book \"" + current.getTitle() + "\" has been deleted by the librarian.");
+                        break;
+                    }
+                }
                 FileUtil.writeBooks(allBooks);
                 loadPublishedBooks();
             }
