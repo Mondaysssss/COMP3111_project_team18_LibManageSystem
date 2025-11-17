@@ -1,1 +1,8 @@
-[]
+[
+  {
+    "bookTitle": "Test1",
+    "borrowerUsername": "s1",
+    "borrowDate": "Nov 17, 2025, 8:27:52 PM",
+    "returnDate": "Nov 17, 2025, 8:29:52 PM"
+  }
+]

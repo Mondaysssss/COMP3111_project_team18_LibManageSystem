@@ -16,6 +16,7 @@ import library.Main;
 import library.models.Book;
 import library.models.User;
 import library.models.BorrowedBook;
+import library.models.Notification;
 import library.utils.FileUtil;
 import library.utils.CurrentUser;
 
@@ -144,6 +145,7 @@ public class LibrarianDashboardController {
         for (Book b : allBooks) {
             if (b.getTitle().equals(book.getTitle())) {
                 b.setStatus("approved");
+                sendNotificationToAuthor(b, "Your book \"" + b.getTitle() + "\" has been approved.");
                 break;
             }
         }
@@ -153,7 +155,13 @@ public class LibrarianDashboardController {
 
     private void rejectBook(Book book) {
         List<Book> allBooks = FileUtil.readBooks();
-        allBooks.removeIf(b -> b.getTitle().equals(book.getTitle()));
+        allBooks.removeIf(b -> {
+            if (b.getTitle().equals(book.getTitle())) {
+                sendNotificationToAuthor(b, "Your book \"" + b.getTitle() + "\" has been rejected.");
+                return true;
+            }
+            return false;
+        });
         FileUtil.writeBooks(allBooks);
         loadPendingBooks(); // Refresh the table
     }
@@ -340,5 +348,14 @@ public class LibrarianDashboardController {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+
+    private void sendNotificationToAuthor(Book book, String message) {
+        if (book.getAuthorUsername() == null || book.getAuthorUsername().isBlank()) {
+            return;
+        }
+        List<Notification> notifications = FileUtil.readNotifications();
+        notifications.add(new Notification(message, book.getAuthorUsername()));
+        FileUtil.writeNotifications(notifications);
     }
 }
