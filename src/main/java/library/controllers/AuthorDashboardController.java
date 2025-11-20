@@ -289,13 +289,18 @@ public class AuthorDashboardController {
             showAlert("Error", "Please select a text file.");
             return;
         }
+
+        List<Book> books = FileUtil.readBooks();
+        if (FileUtil.hasActiveBookWithTitle(books, currentUser.getUsername(), title)) {
+            showAlert("Error", "You already have a pending or published book with this title.");
+            return;
+        }
         
         try {
             String content = FileUtils.readFileToString(selectedBookFile, StandardCharsets.UTF_8);
             Book newBook = new Book(title, currentUser.getFullName(), summary, content);
             newBook.setAuthorUsername(currentUser.getUsername());
             
-            List<Book> books = FileUtil.readBooks();
             books.add(newBook);
             FileUtil.writeBooks(books);
             
