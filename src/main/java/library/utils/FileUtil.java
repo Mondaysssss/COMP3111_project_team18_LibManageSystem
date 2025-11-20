@@ -131,4 +131,38 @@ public class FileUtil {
             e.printStackTrace();
         }
     }
+
+    /**
+     * Checks whether the given author already has a non-rejected book with the provided title.
+     * This helper treats titles case-insensitively and ignores leading/trailing whitespace.
+     *
+     * @param authorUsername the username of the author to check
+     * @param title the proposed title
+     * @return true if a duplicate active (pending/approved) title exists
+     */
+    public static boolean hasActiveBookWithTitle(String authorUsername, String title) {
+        return hasActiveBookWithTitle(readBooks(), authorUsername, title);
+    }
+
+    /**
+     * Variant of {@link #hasActiveBookWithTitle(String, String)} that operates on a provided book list.
+     */
+    public static boolean hasActiveBookWithTitle(List<Book> books, String authorUsername, String title) {
+        if (books == null || authorUsername == null || title == null) {
+            return false;
+        }
+
+        String normalizedAuthor = authorUsername.trim();
+        String normalizedTitle = title.trim();
+
+        return books.stream()
+                .filter(book -> book.getAuthorUsername() != null
+                        && book.getAuthorUsername().trim().equals(normalizedAuthor))
+                .filter(book -> book.getTitle() != null
+                        && book.getTitle().trim().equalsIgnoreCase(normalizedTitle))
+                .anyMatch(book -> {
+                    String status = book.getStatus();
+                    return status == null || !status.equalsIgnoreCase("rejected");
+                });
+    }
 }
