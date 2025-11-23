@@ -8,6 +8,20 @@ import javafx.stage.Stage;
 
 import java.util.Objects;
 
+/**
+ * Main entry point for the Library Management System JavaFX application.
+ * 
+ * <p>This class extends JavaFX Application and initializes the primary stage
+ * with the Home screen, which serves as the role selection interface. It also
+ * provides static access to the primary stage for use by controllers that need
+ * to open new windows or dialogs.
+ * 
+ * <p>The application supports multiple user roles: students/staff, authors, and
+ * librarians, each with their own dashboard and functionality.
+ * 
+ * @author Library Management System Team
+ * @version 1.0
+ */
 public class Main extends Application {
 
     /** The primary JavaFX Stage, made available statically. */

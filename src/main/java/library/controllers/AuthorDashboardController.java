@@ -30,6 +30,25 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * Controller for the Author Dashboard.
+ * 
+ * <p>This controller manages the main interface for authors, providing functionality to:
+ * <ul>
+ *   <li>View all published books with their status (pending, approved, rejected)</li>
+ *   <li>View, modify, and delete their own books</li>
+ *   <li>Publish new books by uploading text files or generating sample content</li>
+ *   <li>View statistics about their books (status distribution, popularity charts)</li>
+ *   <li>Update profile information (name and password)</li>
+ *   <li>View and manage notifications from librarians</li>
+ * </ul>
+ * 
+ * <p>The dashboard includes multiple tabs for organizing different author functions.
+ * Books are initially created with "pending" status and await librarian approval.
+ * 
+ * @author Library Management System Team
+ * @version 1.0
+ */
 public class AuthorDashboardController {
 
     @FXML private TabPane tabPane;
@@ -71,6 +90,11 @@ public class AuthorDashboardController {
     private File selectedBookFile;
     private User currentUser;
 
+    /**
+     * Initializes the dashboard after FXML is loaded.
+     * Sets up all tabs including My Books, Publish New Book, Status View,
+     * My Profile, and Inform Board. Does nothing if no user is logged in.
+     */
     @FXML
     public void initialize() {
         currentUser = CurrentUser.getCurrentUser();

@@ -29,6 +29,25 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+/**
+ * Controller for the Librarian Dashboard.
+ * 
+ * <p>This controller manages the main interface for librarians, providing functionality to:
+ * <ul>
+ *   <li>Review and approve/reject pending book submissions from authors</li>
+ *   <li>View and manage all published books (view, delete)</li>
+ *   <li>Manage user accounts (activate/deactivate users)</li>
+ *   <li>View all borrowed books across all users</li>
+ *   <li>Update profile information (name and password)</li>
+ * </ul>
+ * 
+ * <p>The dashboard includes multiple tabs for organizing different librarian functions.
+ * When approving books, librarians set the published date and send notifications to authors.
+ * When rejecting or deleting books, librarians also notify the affected authors.
+ * 
+ * @author Library Management System Team
+ * @version 1.0
+ */
 public class LibrarianDashboardController {
 
     // Pending Approvals Tab
@@ -67,7 +86,11 @@ public class LibrarianDashboardController {
     @FXML private TableColumn<Book, Void> publishedActionsColumn;
 
 
-    /** Called automatically after FXML is loaded. */
+    /**
+     * Initializes the dashboard after FXML is loaded.
+     * Sets up all tables including Pending Approvals, Published Books,
+     * Manage Users, Borrowed Books, and populates the profile tab.
+     */
     @FXML
     private void initialize() {
         setupPendingBooksTable();

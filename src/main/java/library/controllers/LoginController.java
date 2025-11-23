@@ -18,6 +18,20 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Controller for the Login screen.
+ * 
+ * <p>This controller handles user authentication for all roles (student/staff,
+ * author, and librarian). It validates user credentials against the stored user
+ * database and navigates to the appropriate dashboard upon successful login.
+ * 
+ * <p>The controller also provides navigation to the registration screen and
+ * back to the home screen. The role context is set by the HomeController or
+ * RegisterController before navigation to this screen.
+ * 
+ * @author Library Management System Team
+ * @version 1.0
+ */
 public class LoginController {
     @FXML private Label headerLabel;
     @FXML private TextField usernameField;
@@ -25,6 +39,12 @@ public class LoginController {
 
     private String selectedRole;
 
+    /**
+     * Sets the role context for this login screen.
+     * Updates the header label to reflect the selected role.
+     * 
+     * @param role the role to set ("student", "staff", "author", or "librarian")
+     */
     public void setRole(String role) {
         this.selectedRole = role;
         String role_name = switch (role.toLowerCase()) {
@@ -42,9 +62,15 @@ public class LoginController {
         Main.getPrimaryStage().setScene(new Scene(home, 640, 480));
     }
 
-    // Task 1.1.1: Handling the student/staff login
+    /**
+     * Handles the login button click event.
+     * Validates user credentials and navigates to the appropriate dashboard
+     * if authentication is successful. Only active users can log in.
+     * 
+     * @param event the action event triggered by the login button
+     */
     @FXML
-    private void handleLogin(ActionEvent event) { // task1.1.1
+    private void handleLogin(ActionEvent event) {
         String username = usernameField.getText();
         String password = passwordField.getText();
 
@@ -69,8 +95,11 @@ public class LoginController {
         showAlert("Error", "Invalid username or password.");
     }
 
-    // Task 1.1.1: Navigate to the corresponding dashboard after successful login
-    private void navigateToDashboard() { // task1.1.1
+    /**
+     * Navigates to the appropriate dashboard based on the user's role.
+     * Called after successful authentication.
+     */
+    private void navigateToDashboard() {
         String fxml;
         switch (selectedRole.toLowerCase()) {
             case "student":   fxml = "/fxml/StudentDashboard.fxml";   break;
@@ -86,11 +115,15 @@ public class LoginController {
         }
     }
 
-    /** 
-     * Task 1.1.2: Navigate from Login to Register screen when user clicks "Register" link.
+    /**
+     * Handles navigation to the registration screen.
+     * Preserves the role context when navigating to RegisterController.
+     * 
+     * @param event the action event triggered by the register link
+     * @throws IOException if the FXML file cannot be loaded
      */
     @FXML
-    private void handleGoToRegister(ActionEvent event) throws IOException { // task1.1.2
+    private void handleGoToRegister(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Register.fxml"));
         Parent root = loader.load();
         RegisterController ctrl = loader.getController();

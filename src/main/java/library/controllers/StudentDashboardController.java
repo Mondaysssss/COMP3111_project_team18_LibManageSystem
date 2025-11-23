@@ -28,6 +28,28 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * Controller for the Student/Staff Dashboard.
+ * 
+ * <p>This controller manages the main interface for students and staff members,
+ * providing functionality to:
+ * <ul>
+ *   <li>Browse and view available books</li>
+ *   <li>Borrow books with custom duration (up to 14 days)</li>
+ *   <li>View and manage borrowed books</li>
+ *   <li>Read borrowed books (if not expired)</li>
+ *   <li>Return borrowed books</li>
+ *   <li>Update profile information (name and password)</li>
+ *   <li>View and manage notifications</li>
+ * </ul>
+ * 
+ * <p>The dashboard automatically refreshes borrowed book timeouts every second
+ * and creates notifications for expired books. It filters available books to
+ * exclude those currently borrowed by any user.
+ * 
+ * @author Library Management System Team
+ * @version 1.0
+ */
 public class StudentDashboardController {
 
     @FXML private TableView<Book> availableBooksTable;
@@ -55,7 +77,11 @@ public class StudentDashboardController {
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     private Timeline borrowedTimeLine;
 
-    /** Called automatically after FXML is loaded. */
+    /**
+     * Initializes the dashboard after FXML is loaded.
+     * Sets up all tables, profile information, and notifications.
+     * Navigates to home if no user is logged in.
+     */
     @FXML
     private void initialize() {
         User current = CurrentUser.getCurrentUser();

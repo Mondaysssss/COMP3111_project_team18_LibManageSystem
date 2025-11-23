@@ -16,6 +16,20 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Utility class for reading and writing data to JSON files.
+ * 
+ * <p>This class provides static methods to persist and retrieve library data
+ * including users, books, borrowed books, and notifications. All data is stored
+ * in JSON format in the "data" directory using Gson for serialization/deserialization.
+ * 
+ * <p>The class handles file I/O operations gracefully, returning empty lists
+ * if files don't exist or if errors occur during reading. All write operations
+ * use pretty-printed JSON for human readability.
+ * 
+ * @author Library Management System Team
+ * @version 1.0
+ */
 public class FileUtil {
 
     private static final String USERS_FILE_PATH = "data/users.json";
@@ -24,6 +38,12 @@ public class FileUtil {
     private static final String NOTIFICATIONS_FILE_PATH = "data/notifications.json";
     private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
+    /**
+     * Reads all users from the users.json file.
+     * 
+     * @return a list of all users, or an empty list if the file doesn't exist
+     *         or an error occurs during reading
+     */
     public static List<User> readUsers() {
         try {
             File file = new File(USERS_FILE_PATH);
@@ -42,6 +62,11 @@ public class FileUtil {
         }
     }
 
+    /**
+     * Writes the list of users to the users.json file.
+     * 
+     * @param users the list of users to write
+     */
     public static void writeUsers(List<User> users) {
         try {
             String json = gson.toJson(users);
@@ -51,6 +76,12 @@ public class FileUtil {
         }
     }
 
+    /**
+     * Reads all books from the books.json file.
+     * 
+     * @return a list of all books, or an empty list if the file doesn't exist
+     *         or an error occurs during reading
+     */
     public static List<Book> readBooks() {
         try {
             File file = new File(BOOKS_FILE_PATH);
@@ -69,6 +100,11 @@ public class FileUtil {
         }
     }
 
+    /**
+     * Writes the list of books to the books.json file.
+     * 
+     * @param books the list of books to write
+     */
     public static void writeBooks(List<Book> books) {
         try {
             String json = gson.toJson(books);
@@ -78,6 +114,12 @@ public class FileUtil {
         }
     }
     
+    /**
+     * Reads all borrowed book records from the borrowed_books.json file.
+     * 
+     * @return a list of all borrowed book records, or an empty list if the file
+     *         doesn't exist or an error occurs during reading
+     */
     public static List<BorrowedBook> readBorrowedBooks() {
         try {
             File file = new File(BORROWED_BOOKS_FILE_PATH);
@@ -96,6 +138,11 @@ public class FileUtil {
         }
     }
 
+    /**
+     * Writes the list of borrowed book records to the borrowed_books.json file.
+     * 
+     * @param borrowedBooks the list of borrowed book records to write
+     */
     public static void writeBorrowedBooks(List<BorrowedBook> borrowedBooks) {
         try {
             String json = gson.toJson(borrowedBooks);
@@ -105,6 +152,12 @@ public class FileUtil {
         }
     }
 
+    /**
+     * Reads all notifications from the notifications.json file.
+     * 
+     * @return a list of all notifications, or an empty list if the file doesn't exist
+     *         or an error occurs during reading
+     */
     public static List<Notification> readNotifications() {
         try {
             File file = new File(NOTIFICATIONS_FILE_PATH);
@@ -123,6 +176,11 @@ public class FileUtil {
         }
     }
 
+    /**
+     * Writes the list of notifications to the notifications.json file.
+     * 
+     * @param notifications the list of notifications to write
+     */
     public static void writeNotifications(List<Notification> notifications) {
         try {
             String json = gson.toJson(notifications);

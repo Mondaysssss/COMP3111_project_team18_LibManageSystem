@@ -16,6 +16,19 @@ import library.utils.FileUtil;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * Controller for the Registration screen.
+ * 
+ * <p>This controller handles new user registration for all roles (student/staff,
+ * author, and librarian). It validates that all required fields are provided and
+ * that the username is unique. Upon successful registration, it navigates to the
+ * login screen with the role context preserved.
+ * 
+ * <p>The role context is set by the LoginController before navigation to this screen.
+ * 
+ * @author Library Management System Team
+ * @version 1.0
+ */
 public class RegisterController {
 
     @FXML private Label headerLabel;
@@ -25,14 +38,26 @@ public class RegisterController {
 
     private String selectedRole;
 
+    /**
+     * Sets the role context for this registration screen.
+     * Updates the header label to reflect the selected role.
+     * 
+     * @param role the role to set ("student", "staff", "author", or "librarian")
+     */
     public void setRole(String role) {
         this.selectedRole = role;
         headerLabel.setText(capitalize(role) + " Register");
     }
 
-    // Task 1.1.2: Handling the student/staff registration
+    /**
+     * Handles the registration button click event.
+     * Validates input fields, checks for username uniqueness, creates a new user,
+     * and navigates to the login screen upon successful registration.
+     * 
+     * @param event the action event triggered by the register button
+     */
     @FXML
-    private void handleRegister(ActionEvent event) { // task1.1.2
+    private void handleRegister(ActionEvent event) {
         String username = usernameField.getText();
         String password = passwordField.getText();
         String fullName = fullNameField.getText();
